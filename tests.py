@@ -20,14 +20,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     while True:
         print("Waiting for a connection...")
-        conn, raddr = s.accept()
-        print('Connection from: ', raddr)
+        conn, baddr = s.accept()
+        print('Connection from: ', baddr)
 
         recv_bytes = conn.recv(1024)
         text = recv_bytes.decode('utf-8')
 
         method_from_request = text.split(" /")[0]
-        headers_from_requst = text.split("\r\n")[1:]
+        headers_from_request = text.split("\r\n")[1:]
         sub_str_with_status = text.split("\r\n")[0]
         try:
             status_from_request = int(sub_str_with_status.split(" ")[1].split("status=")[1])
@@ -39,7 +39,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                f"<div>Request Source: {srv_addr}</div>" \
                f"<div>Response Status: {status.value} {status.name}</div>" \
                f"<br></br>"
-        for item in headers_from_requst:
+        for item in headers_from_request:
             body += f"<div>{item}</div>"
 
         status_line = f"HTTP/1.1 {status.value} {status.name}"
